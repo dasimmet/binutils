@@ -1301,7 +1301,6 @@
 #endif
 
 
-
     
 #if !defined (SELECT_VECS) || defined (HAVE_mips_elf32_ntrad_le_vec)
 
@@ -1316,7 +1315,6 @@
 { "mips64*-*-linux*-gnuabi64",
 &mips_elf64_trad_be_vec },
 #endif
-
 
 
     
