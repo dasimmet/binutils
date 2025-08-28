@@ -3,17 +3,15 @@
 const std = @import("std");
 
 pub fn main() !void {
-    var general_purpose_allocator: std.heap.GeneralPurposeAllocator(.{}) = .{};
-    defer _ = general_purpose_allocator.deinit();
-    const gpa = general_purpose_allocator.allocator();
+    var debug_allocator: std.heap.DebugAllocator(.{}) = .init;
+    defer _ = debug_allocator.deinit();
+    const gpa = debug_allocator.allocator();
 
     const args = try std.process.argsAlloc(gpa);
     defer std.process.argsFree(gpa, args);
 
-    const stderr = std.io.getStdErr().writer();
-
     if (args.len != 5) {
-        try stderr.print("usage: {s} <input_file> <output_file> <before> <after>\n", .{args[0]});
+        std.debug.print("usage: {s} <input_file> <output_file> <before> <after>\n", .{args[0]});
         std.process.exit(1);
     }
 

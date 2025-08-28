@@ -37,12 +37,12 @@ pub fn build(b: *std.Build) void {
         .PACKAGE = "libsframe",
         .PACKAGE_BUGREPORT = "",
         .PACKAGE_NAME = "libsframe",
-        .PACKAGE_STRING = b.fmt("libsframe {}", .{version}),
+        .PACKAGE_STRING = b.fmt("libsframe {f}", .{version}),
         .PACKAGE_TARNAME = "libsframe",
         .PACKAGE_URL = "",
-        .PACKAGE_VERSION = b.fmt("{}", .{version}),
+        .PACKAGE_VERSION = b.fmt("{f}", .{version}),
         .STDC_HEADERS = true,
-        .VERSION = b.fmt("{}", .{version}),
+        .VERSION = b.fmt("{f}", .{version}),
     });
 
     const libsframe = b.addLibrary(.{
@@ -76,7 +76,7 @@ pub fn build(b: *std.Build) void {
     });
 
     const libiberty_config_header = b.addConfigHeader(.{
-        .style = .{ .autoconf = upstream.path("libiberty/config.in") },
+        .style = .{ .autoconf_undef = upstream.path("libiberty/config.in") },
     }, .{
         .AC_APPLE_UNIVERSAL_BUILD = null,
         .CRAY_STACKSEG_END = null,
@@ -273,7 +273,7 @@ pub fn build(b: *std.Build) void {
     }
 
     const libbfd_config_header = b.addConfigHeader(.{
-        .style = .{ .autoconf = upstream.path("bfd/config.in") },
+        .style = .{ .autoconf_undef = upstream.path("bfd/config.in") },
     }, .{
         .AC_APPLE_UNIVERSAL_BUILD = null,
         .CORE_HEADER = @as(?[]const u8, switch (target.result.os.tag) {
@@ -370,10 +370,10 @@ pub fn build(b: *std.Build) void {
         .PACKAGE = "bfd",
         .PACKAGE_BUGREPORT = "",
         .PACKAGE_NAME = "bfd",
-        .PACKAGE_STRING = b.fmt("bfd {}", .{version}),
+        .PACKAGE_STRING = b.fmt("bfd {f}", .{version}),
         .PACKAGE_TARNAME = "bfd",
         .PACKAGE_URL = "",
-        .PACKAGE_VERSION = b.fmt("{}", .{version}),
+        .PACKAGE_VERSION = b.fmt("{f}", .{version}),
         .SIZEOF_INT = target.result.cTypeByteSize(.int),
         .SIZEOF_LONG = target.result.cTypeByteSize(.long),
         .SIZEOF_LONG_LONG = target.result.cTypeByteSize(.longlong),
@@ -392,7 +392,7 @@ pub fn build(b: *std.Build) void {
         ._POSIX_PTHREAD_SEMANTICS = true,
         ._TANDEM_SOURCE = true,
         .__EXTENSIONS__ = true,
-        .VERSION = b.fmt("{}", .{version}),
+        .VERSION = b.fmt("{f}", .{version}),
         .WORDS_BIGENDIAN = if (target.result.cpu.arch.endian() == .big) @as(i64, 1) else null,
         ._FILE_OFFSET_BITS = null,
         ._LARGE_FILES = null,
@@ -745,8 +745,10 @@ pub fn build(b: *std.Build) void {
 
     const find_replace_exe = b.addExecutable(.{
         .name = "find-replace",
-        .root_source_file = b.path("find_replace.zig"),
-        .target = b.graph.host,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("find_replace.zig"),
+            .target = b.graph.host,
+        }),
     });
 
     const generated_header_files: []const std.Build.LazyPath = &.{
@@ -826,7 +828,7 @@ pub fn build(b: *std.Build) void {
     }
 
     const opcodes_config_header = b.addConfigHeader(.{
-        .style = .{ .autoconf = upstream.path("opcodes/config.in") },
+        .style = .{ .autoconf_undef = upstream.path("opcodes/config.in") },
     }, .{
         .ENABLE_CHECKING = true,
         .ENABLE_NLS = if (target.result.os.tag == .linux or target.result.os.tag == .windows) true else null,
@@ -852,10 +854,10 @@ pub fn build(b: *std.Build) void {
         .PACKAGE = "opcodes",
         .PACKAGE_BUGREPORT = "",
         .PACKAGE_NAME = "opcodes",
-        .PACKAGE_STRING = b.fmt("opcodes {}", .{version}),
+        .PACKAGE_STRING = b.fmt("opcodes {f}", .{version}),
         .PACKAGE_TARNAME = "opcodes",
         .PACKAGE_URL = "",
-        .PACKAGE_VERSION = b.fmt("{}", .{version}),
+        .PACKAGE_VERSION = b.fmt("{f}", .{version}),
         .SIZEOF_VOID_P = target.result.ptrBitWidth() / 8,
         .STDC_HEADERS = true,
         ._ALL_SOURCE = true,
@@ -863,7 +865,7 @@ pub fn build(b: *std.Build) void {
         ._POSIX_PTHREAD_SEMANTICS = true,
         ._TANDEM_SOURCE = true,
         .__EXTENSIONS__ = true,
-        .VERSION = b.fmt("{}", .{version}),
+        .VERSION = b.fmt("{f}", .{version}),
         ._MINIX = null,
         ._POSIX_1_SOURCE = null,
         ._POSIX_SOURCE = null,
