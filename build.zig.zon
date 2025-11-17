@@ -3,11 +3,9 @@
     .version = "2.45.0",
     .minimum_zig_version = "0.15.1",
     .dependencies = .{
-        // Zig cannot fetch this dependency from https://sourceware.org/git/binutils-gdb.git yet.
-        // See https://github.com/ziglang/zig/issues/22650
         .binutils = .{
-            .url = "https://github.com/bminor/binutils-gdb/archive/2bc7af1ff7732451b6a7b09462a815c3284f9613.tar.gz",
-            .hash = "N-V-__8AALcr8hffnqup1iGZuepdhvmoQ4E9IT61eWdnELE0",
+            .url = "https://sourceware.org/pub/binutils/releases/binutils-2.45.tar.xz",
+            .hash = "N-V-__8AAA6W9hFBAXcaEDszHBBVI0IfEpYUwk8y2YtqoTBr",
         },
         .zlib = .{
             .url = "git+https://github.com/allyourcodebase/zlib#61e7df7e996ec5a5f13a653db3c419adb340d6ef",
