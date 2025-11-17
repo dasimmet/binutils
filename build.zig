@@ -403,12 +403,6 @@ pub fn build(b: *std.Build) void {
         .CORE_HEADER = @as(?[]const u8, switch (target.result.os.tag) {
             .linux => switch (target.result.cpu.arch) {
                 .x86_64 => "hosts/x86-64linux.h",
-                .x86 => "hosts/i386linux.h",
-                .m68k => "hosts/m68klinux.h",
-                else => null,
-            },
-            .freebsd, .openbsd, .netbsd, .dragonfly => switch (target.result.cpu.arch) {
-                .x86_64 => "hosts/x86-64bsd.h",
                 else => null,
             },
             else => null,
@@ -508,18 +502,7 @@ pub fn build(b: *std.Build) void {
         .SIZEOF_VOID_P = target.result.ptrBitWidth() / 8,
         .STDC_HEADERS = true,
         .TLS = ._Thread_local,
-        .TRAD_HEADER = @as(?[]const u8, switch (target.result.cpu.arch) {
-            .x86 => switch (target.result.os.tag) {
-                .linux => "hosts/i386linux.h",
-                .freebsd, .dragonfly => "hosts/i386bsd.h",
-                else => null,
-            },
-            .m68k => switch (target.result.os.tag) {
-                .linux => "hosts/m68klinux.h",
-                else => null,
-            },
-            else => null,
-        }),
+        .TRAD_HEADER = null,
         .USE_64_BIT_ARCHIVE = null,
         .USE_BINARY_FOPEN = null,
         .USE_MINGW64_LEADING_UNDERSCORES = null,
@@ -829,6 +812,11 @@ pub fn build(b: *std.Build) void {
                 &.{ "i386_elf32_fbsd_vec", "iamcu_elf32_vec", "i386_coff_vec", "i386_pei_vec", "x86_64_pe_vec", "x86_64_pei_vec", "i386_elf32_vec", "x86_64_elf64_vec", "elf64_le_vec", "elf64_be_vec", "elf32_le_vec", "elf32_be_vec" },
                 &.{ "bfd_i386_arch", "bfd_iamcu_arch" },
             },
+            .netbsd => .{
+                "x86_64_elf64_vec",
+                &.{ "i386_elf32_vec", "iamcu_elf32_vec", "i386_coff_vec", "i386_pei_vec", "x86_64_pe_vec", "x86_64_pei_vec", "elf64_le_vec", "elf64_be_vec", "elf32_le_vec", "elf32_be_vec" },
+                &.{ "bfd_i386_arch", "bfd_iamcu_arch" },
+            },
             else => std.debug.panic("TODO '{s}-{s}'", .{ @tagName(target.result.cpu.arch), @tagName(target.result.os.tag) }),
         },
         .x86 => switch (target.result.os.tag) {
@@ -840,6 +828,16 @@ pub fn build(b: *std.Build) void {
             .linux => .{
                 "i386_elf32_vec",
                 &.{ "iamcu_elf32_vec", "i386_pei_vec", "elf32_le_vec", "elf32_be_vec" },
+                &.{ "bfd_i386_arch", "bfd_iamcu_arch" },
+            },
+            .freebsd => .{
+                "i386_elf32_fbsd_vec",
+                &.{ "i386_elf32_vec", "iamcu_elf32_vec", "i386_pei_vec", "i386_coff_vec", "elf32_le_vec", "elf32_be_vec" },
+                &.{ "bfd_i386_arch", "bfd_iamcu_arch" },
+            },
+            .netbsd => .{
+                "i386_elf32_vec",
+                &.{ "iamcu_elf32_vec", "elf32_le_vec", "elf32_be_vec" },
                 &.{ "bfd_i386_arch", "bfd_iamcu_arch" },
             },
             else => std.debug.panic("TODO '{s}-{s}'", .{ @tagName(target.result.cpu.arch), @tagName(target.result.os.tag) }),
@@ -858,6 +856,16 @@ pub fn build(b: *std.Build) void {
             .linux => .{
                 "x86_64_elf64_vec",
                 &.{ "i386_elf32_vec", "iamcu_elf32_vec", "x86_64_elf32_vec", "i386_pei_vec", "x86_64_pe_vec", "x86_64_pei_vec", "elf64_le_vec", "elf64_be_vec", "elf32_le_vec", "elf32_be_vec" },
+                &.{ "bfd_aarch64_arch", "bfd_arm_arch" },
+            },
+            .freebsd => .{
+                "aarch64_elf64_le_vec",
+                &.{ "aarch64_elf64_be_vec", "arm_elf32_le_vec", "arm_elf32_be_vec", "elf64_le_vec", "elf64_be_vec", "elf32_le_vec", "elf32_be_vec" },
+                &.{ "bfd_aarch64_arch", "bfd_arm_arch" },
+            },
+            .netbsd => .{
+                "aarch64_elf64_le_vec",
+                &.{ "aarch64_elf64_be_vec", "aarch64_elf32_le_vec", "aarch64_elf32_be_vec", "arm_elf32_le_vec", "arm_elf32_be_vec", "aarch64_pei_le_vec", "aarch64_pe_le_vec", "elf64_le_vec", "elf64_be_vec", "elf32_le_vec", "elf32_be_vec" },
                 &.{ "bfd_aarch64_arch", "bfd_arm_arch" },
             },
             else => std.debug.panic("TODO '{s}-{s}'", .{ @tagName(target.result.cpu.arch), @tagName(target.result.os.tag) }),
