@@ -1,7 +1,7 @@
 .{
     .name = .binutils,
     .version = "2.45.0",
-    .minimum_zig_version = "0.15.1",
+    .minimum_zig_version = "0.16.0",
     .dependencies = .{
         .binutils = .{
             .url = "https://sourceware.org/pub/binutils/releases/binutils-2.45.tar.xz",
@@ -13,8 +13,8 @@
             .lazy = true,
         },
         .zstd = .{
-            .url = "git+https://github.com/allyourcodebase/zstd.git?ref=1.5.7#01327d49cbc56dc24c20a167bb0055d7fc23de84",
-            .hash = "zstd-1.5.7-KEItkJ8vAAC5_rRlKmLflYQ-eKXbAIQBWZNmmJtS18q0",
+            .url = "git+https://github.com/allyourcodebase/zstd.git?ref=1.5.7-1#e1a501be57f42c541e8a5597e4b59a074dfd09a3",
+            .hash = "zstd-1.5.7-1-KEItkAMwAAD6OKY3m0OOmXG7aL-aLUfrDqbP5J5oYapU",
             .lazy = true,
         },
     },
